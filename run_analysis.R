@@ -99,4 +99,6 @@ print(dim(observation_table2))
 
 View(observation_table2)
 
-
+write.table(observation_table2, file = "FinalTidyDataset-GCDProject.txt",
+      col.names=TRUE,row.names=FALSE,
+      append = FALSE,sep=" ")

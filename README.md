@@ -1,29 +1,12 @@
 ---
 title: "Getting and Cleaning Data Course Project"
 author: "Daina Emmanuel"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 GCD Course Project: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
-
-##Reading all data 
-
-Input Available : 
-Observations per person, activity and test type ie either training or test 
-
-To Tidy the data :
-What we need to do : 
-1. 
-2. 
-3. 
-4. 
-
-
-
-
 
 ## Assignement Question : 
 You should create one R script called run_analysis.R that does the following. 
@@ -33,45 +16,103 @@ You should create one R script called run_analysis.R that does the following.
 4. Appropriately labels the data set with descriptive variable names. 
 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
+##Methodology 
 
-## R Script -  Info
+Input Available : 
+Observations per person, activity and test type ie either training or test 
 
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+To Tidy the data :
+1. Decision between wide format or narrow format 
+  -> I went for wide format as I am comfortable with column operations 
+  
+2.Relevant columns from training and test data ie Subject , Activity and the paramtere observations are cbind to one dataset 
+This will give me 1st level of cleaned up metrics 
+
+3. From this dataset we extract only the means and std values corresponding to the observations 
+
+4. The Observations are then summarized per subject ID and type to give average observations. 
+
+5. This data set is the minimal dataset for me
+
+
+## How to obtain the end result. 
+1. Set the working directory and extract teh data set to the same
+2. run the run_analysis.R file 
+3. A Tidy data with file name "FinalTidyDataset-GCDProject.txt" will be available in the working directory
+
 
 ## Code Book
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+https://github.com/demmanuel123/GCDCourse/blob/master/CodeBook.txt
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
 
-## Data Set
+==================================================================
+Human Activity Recognition Using Smartphones Dataset
+Version 1.0
+==================================================================
+Jorge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto.
+Smartlab - Non Linear Complex Systems Laboratory
+DITEN - Università degli Studi di Genova.
+Via Opera Pia 11A, I-16145, Genoa, Italy.
+activityrecognition@smartlab.ws
+www.smartlab.ws
+==================================================================
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details. 
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+For each record it is provided:
+======================================
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time and frequency domain variables. 
+- Its activity label. 
+- An identifier of the subject who carried out the experiment.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+The dataset includes the following files:
+=========================================
 
-## More Examples
+- 'README.txt'
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+- 'features_info.txt': Shows information about the variables used on the feature vector.
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
+- 'features.txt': List of all features.
 
-Also a quote using `>`:
+- 'activity_labels.txt': Links the class labels with their activity name.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+- 'train/X_train.txt': Training set.
+
+- 'train/y_train.txt': Training labels.
+
+- 'test/X_test.txt': Test set.
+
+- 'test/y_test.txt': Test labels.
+
+The following files are available for the train and test data. Their descriptions are equivalent. 
+
+- 'train/subject_train.txt': Each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. 
+
+- 'train/Inertial Signals/total_acc_x_train.txt': The acceleration signal from the smartphone accelerometer X axis in standard gravity units 'g'. Every row shows a 128 element vector. The same description applies for the 'total_acc_x_train.txt' and 'total_acc_z_train.txt' files for the Y and Z axis. 
+
+- 'train/Inertial Signals/body_acc_x_train.txt': The body acceleration signal obtained by subtracting the gravity from the total acceleration. 
+
+- 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
+
+Notes: 
+======
+- Features are normalized and bounded within [-1,1].
+- Each feature vector is a row on the text file.
+
+For more information about this dataset contact: activityrecognition@smartlab.ws
+
+License:
+========
+Use of this dataset in publications must be acknowledged by referencing the following publication [1] 
+
+[1] Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
+
+This dataset is distributed AS-IS and no responsibility implied or explicit can be addressed to the authors or their institutions for its use or misuse. Any commercial use is prohibited.
+
+Jorge L. Reyes-Ortiz, Alessandro Ghio, Luca Oneto, Davide Anguita. November 2012.
