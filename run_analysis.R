@@ -40,21 +40,20 @@ names(subject_test) <- "obsID"
 
 ## generating training data 
 train_ind_data <- cbind(subject_train
-                        ,obsType="train"
+#                        ,obsType="train"
                         ,Y_train
                         ,X_train
 
 )
 # generating test data 
 test_ind_data <- cbind(subject_test
-                       ,obsType="test"
+#                       ,obsType="test"
                         ,Y_test
                         ,X_test
 )
 # Merges the training and the test sets to create one data set.
 
 observation_table1 <- rbind(train_ind_data,test_ind_data)
-print(dim(observation_table1))
 
 
 # Extracts only the measurements on the mean and standard deviation for each measurement. 
@@ -63,14 +62,14 @@ mean_subset <-select(observation_table1, contains("mean"))
 std_subset <- select(observation_table1, contains("std"))
 
 observation_table2 <- cbind(observation_table1$obsID,
-                (observation_table1$obsType),
+#                (observation_table1$obsType),
                 observation_table1$obsActivity,
                 mean_subset,
                 std_subset)
 
 names(observation_table2)[1] <-"obsID"
-names(observation_table2)[2] <-"obsType"
-names(observation_table2)[3] <-"obsActivity"
+#names(observation_table2)[2] <-"obsType"
+names(observation_table2)[2] <-"obsActivity"
 observation_table2 <- tbl_df(observation_table2)
 
 # Uses descriptive activity names to name the activities in the data set
@@ -87,18 +86,17 @@ observation_table2$obsActivity_str[which(as.character(observation_table2$obsActi
 # From the data set in step 4, creates a second, independent tidy data set
 # with the average of each variable for each activity and each subject.
 
+id <- c(3:88) 
+observation_table2[,id] <- as.numeric(as.character(unlist(observation_table2[,id]),
+                                                   drop=FALSE,recursive =FALSE,
+                                                   use.names=FALSE))
+observation_table2 <- observation_table2[,c(1,89,3:88)]
 
-observation_table3 <- group_by(observation_table2,obsID,obsActivity)
-id <- c(4:89) 
-observation_table3[,id] <- as.numeric(as.character(unlist(observation_table3[,id]),
-                                       drop=FALSE,recursive =FALSE,
-                                       use.names=FALSE))
+observation_table2 <- group_by(observation_table2,obsID,obsActivity_str) %>%
+  summarise_each(funs(mean))%>% arrange(obsID,obsActivity_str)
 
-observation_table3 <- observation_table3[,c(2,90,1,3,4:89)]
-View(observation_table3)
+print(dim(observation_table2))
 
-#Now I need to find the summarise_each by groups which is becoming very damn confusing . 
-#by_table3 <- summarise(by_table3, average = ave(average))
+View(observation_table2)
 
-#by_table3<- summarise_each(table4, funs(ave))
 
